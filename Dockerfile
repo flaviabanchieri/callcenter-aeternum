@@ -33,7 +33,7 @@ WORKDIR $APP
 
 # Run build: 1 - clean, 2 - pub get, 3 - build web
 RUN flutter clean
-RUN flutter upgrade && dart --version
+RUN flutter upgrade 
 RUN flutter pub add collection
 RUN flutter pub add google_sign_in
 RUN flutter pub get
