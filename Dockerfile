@@ -38,7 +38,7 @@ RUN flutter upgrade
 RUN flutter pub add collection
 RUN flutter pub add google_sign_in
 RUN flutter pub get
-RUN flutter build web --release --web-renderer html
+RUN flutter build web --release 
 
 # use nginx to deploy
 FROM nginx:1.25.2-alpine
