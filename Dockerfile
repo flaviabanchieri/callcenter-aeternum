@@ -33,7 +33,8 @@ WORKDIR $APP
 
 # Run build: 1 - clean, 2 - pub get, 3 - build web
 RUN flutter clean
-RUN flutter pub add collection:^1.19.0
+RUN flutter pub remove collection
+RUN flutter pub add collection
 RUN flutter pub add google_sign_in
 RUN flutter pub get
 RUN flutter build web --release --web-renderer html
