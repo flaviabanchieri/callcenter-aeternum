@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 # define variables
 ARG FLUTTER_SDK=/usr/local/flutter
-ARG FLUTTER_VERSION=3.22.2
+ARG FLUTTER_VERSION=3.5.0
 ARG APP=/app/
 
 # clone flutter
