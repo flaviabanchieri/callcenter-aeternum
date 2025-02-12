@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 # define variables
 ARG FLUTTER_SDK=/usr/local/flutter
-ARG FLUTTER_VERSION=3.8.3
+ARG FLUTTER_VERSION=3.10.7
 ARG APP=/app/
 
 # clone flutter
