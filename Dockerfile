@@ -33,8 +33,6 @@ WORKDIR $APP
 
 # Run build: 1 - clean, 2 - pub get, 3 - build web
 RUN flutter clean
-RUN useradd -m flutteruser
-USER flutteruser
 RUN flutter channel stable
 RUN flutter upgrade 
 RUN flutter pub add collection
