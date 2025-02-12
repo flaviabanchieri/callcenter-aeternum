@@ -480,7 +480,7 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                       await TerminarLigacaoCall.call(
                                     userEmail: currentUserEmail,
                                     leadId: valueOrDefault<String>(
-                                      widget!.idLead.toString(),
+                                      widget.idLead.toString(),
                                       '0',
                                     ),
                                     userId: currentUserUid,
@@ -527,7 +527,7 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                       },
                                       matchingRows: (rows) => rows.eqOrNull(
                                         'id',
-                                        widget!.idLead,
+                                        widget.idLead,
                                       ),
                                     );
                                     Navigator.pop(context);
@@ -537,13 +537,13 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                       queryParameters: {
                                         'lead': serializeParam(
                                           valueOrDefault<String>(
-                                            widget!.nomeLead,
+                                            widget.nomeLead,
                                             '-',
                                           ),
                                           ParamType.String,
                                         ),
                                         'id': serializeParam(
-                                          widget!.idLead,
+                                          widget.idLead,
                                           ParamType.int,
                                         ),
                                       }.withoutNulls,
@@ -565,7 +565,7 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                         },
                                         matchingRows: (rows) => rows.eqOrNull(
                                           'id',
-                                          widget!.idLead,
+                                          widget.idLead,
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -575,13 +575,13 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                         queryParameters: {
                                           'lead': serializeParam(
                                             valueOrDefault<String>(
-                                              widget!.nomeLead,
+                                              widget.nomeLead,
                                               '-',
                                             ),
                                             ParamType.String,
                                           ),
                                           'id': serializeParam(
-                                            widget!.idLead,
+                                            widget.idLead,
                                             ParamType.int,
                                           ),
                                         }.withoutNulls,
@@ -626,7 +626,7 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                             matchingRows: (rows) =>
                                                 rows.eqOrNull(
                                               'id',
-                                              widget!.idLead,
+                                              widget.idLead,
                                             ),
                                           );
                                           Navigator.pop(context);
@@ -636,13 +636,13 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                             queryParameters: {
                                               'lead': serializeParam(
                                                 valueOrDefault<String>(
-                                                  widget!.nomeLead,
+                                                  widget.nomeLead,
                                                   '-',
                                                 ),
                                                 ParamType.String,
                                               ),
                                               'id': serializeParam(
-                                                widget!.idLead,
+                                                widget.idLead,
                                                 ParamType.int,
                                               ),
                                             }.withoutNulls,
@@ -659,7 +659,7 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                           },
                                           matchingRows: (rows) => rows.eqOrNull(
                                             'id',
-                                            widget!.idLead,
+                                            widget.idLead,
                                           ),
                                         );
                                         Navigator.pop(context);
@@ -669,13 +669,13 @@ class _LeadOpenWidgetState extends State<LeadOpenWidget>
                                           queryParameters: {
                                             'lead': serializeParam(
                                               valueOrDefault<String>(
-                                                widget!.nomeLead,
+                                                widget.nomeLead,
                                                 '-',
                                               ),
                                               ParamType.String,
                                             ),
                                             'id': serializeParam(
-                                              widget!.idLead,
+                                              widget.idLead,
                                               ParamType.int,
                                             ),
                                           }.withoutNulls,

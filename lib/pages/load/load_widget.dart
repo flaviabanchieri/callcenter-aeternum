@@ -5,12 +5,13 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+
 import 'load_model.dart';
 export 'load_model.dart';
 
@@ -34,7 +35,7 @@ class _LoadWidgetState extends State<LoadWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.consultaUsuario = await UsuarioTable().queryRows(
-        queryFn: (q) => q.eq(
+        queryFn: (q) => q.eqOrNull(
           'user',
           currentUserUid,
         ),
@@ -49,90 +50,53 @@ class _LoadWidgetState extends State<LoadWidget> {
         return;
       }
       _model.permissao = valueOrDefault<int>(
-        _model.consultaUsuario?.first?.permissao,
+        _model.consultaUsuario?.firstOrNull?.permissao,
         0,
       );
-      _model.passwordDefault = _model.consultaUsuario?.first?.passwordDefault;
+      _model.passwordDefault =
+          _model.consultaUsuario?.firstOrNull?.passwordDefault;
       safeSetState(() {});
       FFAppState().permissao = valueOrDefault<int>(
         _model.permissao,
         0,
       );
       FFAppState().UsuarioNome = valueOrDefault<String>(
-        _model.consultaUsuario?.first?.nome,
+        _model.consultaUsuario?.firstOrNull?.nome,
         'Nome Usuário',
       );
       FFAppState().FotoUsuario = valueOrDefault<String>(
-        _model.consultaUsuario?.first?.foto,
+        _model.consultaUsuario?.firstOrNull?.foto,
         'Null',
       );
       FFAppState().pagina = Pagina.dashboard;
       FFAppState().update(() {});
       if (_model.permissao == 1) {
-        _model.dataInicial = functions.montarData(
-            1, functions.mesAtual(), functions.anoAtual(), false);
-        _model.dataFinal = functions.montarData(
-            functions.retornaUltimoDiaMes(
-                functions.mesAtual(), functions.anoAtual()),
-            functions.mesAtual(),
-            functions.anoAtual(),
-            true);
-        safeSetState(() {});
-        _model.apiQuantidadeLeadsLoad =
-            await QuantidadeDeLeadsPorPeriodoCall.call(
-          dataInicial: _model.dataInicial?.toString(),
-          dataFinal: _model.dataFinal?.toString(),
+        _model.painelGestor = await ObterPainelCardsCall.call(
+          userId: currentUserUid,
+          permissao: FFAppState().permissao.toString(),
         );
 
-        _model.apiCountLeadConcluidoLoad =
-            await QuantidadeLeadsConcluidoCall.call(
-          dataInicial: _model.dataInicial?.toString(),
-          dataFinal: functions
-              .montarData(
-                  functions.retornaUltimoDiaMes(
-                      functions.mesAtual(), functions.anoAtual()),
-                  functions.mesAtual(),
-                  functions.anoAtual(),
-                  true)
-              ?.toString(),
+        FFAppState().totalLeadGestor = valueOrDefault<int>(
+          ObterPainelCardsCall.total(
+            (_model.painelGestor?.jsonBody ?? ''),
+          ),
+          0,
         );
-
-        _model.apiResultQuantidadeVendasLoad =
-            await QuantidadeVendasRealizadasCall.call(
-          dataInicial: _model.dataInicial?.toString(),
-          dataFinal: functions
-              .montarData(
-                  functions.retornaUltimoDiaMes(
-                      functions.mesAtual(), functions.anoAtual()),
-                  functions.mesAtual(),
-                  functions.anoAtual(),
-                  true)
-              ?.toString(),
+        FFAppState().totalConcluidoGestor = valueOrDefault<int>(
+          ObterPainelCardsCall.concluidos(
+            (_model.painelGestor?.jsonBody ?? ''),
+          ),
+          0,
         );
-
-        _model.apiResultFaturamentoMensalLoad =
-            await FaturamentoMensalCall.call(
-          dataInicial: _model.dataInicial?.toString(),
-          dataFinal: functions
-              .montarData(
-                  functions.retornaUltimoDiaMes(
-                      functions.mesAtual(), functions.anoAtual()),
-                  functions.mesAtual(),
-                  functions.anoAtual(),
-                  true)
-              ?.toString(),
+        FFAppState().totalRealizadasGestor = valueOrDefault<int>(
+          ObterPainelCardsCall.vendidos(
+            (_model.painelGestor?.jsonBody ?? ''),
+          ),
+          0,
         );
-
-        FFAppState().totalLeadGestor =
-            (_model.apiQuantidadeLeadsLoad?.jsonBody ?? '');
-        FFAppState().totalConcluidoGestor =
-            (_model.apiCountLeadConcluidoLoad?.jsonBody ?? '');
-        FFAppState().totalRealizadasGestor =
-            (_model.apiResultQuantidadeVendasLoad?.jsonBody ?? '');
         FFAppState().totalFaturamentoGestor = valueOrDefault<double>(
-          getJsonField(
-            (_model.apiResultFaturamentoMensalLoad?.jsonBody ?? ''),
-            r'''$''',
+          ObterPainelCardsCall.faturado(
+            (_model.painelGestor?.jsonBody ?? ''),
           ),
           0.0,
         );
@@ -151,81 +115,52 @@ class _LoadWidgetState extends State<LoadWidget> {
           if (_model.passwordDefault!) {
             context.goNamedAuth('AlterarSenha', context.mounted);
           } else {
-            _model.dataInicial = functions.montarData(
-                1, functions.mesAtual(), functions.anoAtual(), false);
-            _model.dataFinal = functions.montarData(
-                functions.retornaUltimoDiaMes(
-                    functions.mesAtual(), functions.anoAtual()),
-                functions.mesAtual(),
-                functions.anoAtual(),
-                true);
-            safeSetState(() {});
-            _model.queryConfiguracaoInicialLoad =
-                await ConfiguracoesTable().queryRows(
-              queryFn: (q) => q.eq(
-                'mes_ano',
-                functions.mesAnoAtual(),
+            _model.painelA = await ObterPainelCardsCall.call(
+              userId: currentUserUid,
+              permissao: valueOrDefault<String>(
+                FFAppState().permissao.toString(),
+                '2',
               ),
-            );
-            _model.retuurnCountLeadsAtendenteLoad =
-                await QuantidadeDeLeadsAtendenteCall.call(
-              dataInicial: _model.dataInicial?.toString(),
-              dataFinal: _model.dataFinal?.toString(),
-              atendente: currentUserUid,
-            );
-
-            _model.queryQuantidadeLigacoes = await LigacoesTable().queryRows(
-              queryFn: (q) => q.eq(
-                'user_id',
-                currentUserUid,
-              ),
-            );
-            _model.retornoApiLeadsConcluidosAtendente =
-                await QuantidadeDeLeadsConcluidosPorAtendenteCall.call(
-              dataInicial: _model.dataInicial?.toString(),
-              dataFinal: _model.dataFinal?.toString(),
-              atendente: currentUserUid,
-            );
-
-            _model.apiReturQuantidadeVendasAtendente =
-                await QuantidadeDeVendasPorAtendenteCall.call(
-              dataInicial: _model.dataInicial?.toString(),
-              dataFinal: _model.dataFinal?.toString(),
-              atendente: currentUserUid,
-            );
-
-            _model.faturamentoAtendente = await RelatorioFaturamentoCall.call(
-              dataInicial: valueOrDefault<String>(
-                _model.dataInicial?.toString(),
-                '01/01/2001',
-              ),
-              dataFinal: _model.dataFinal?.toString(),
-              usuario: currentUserUid,
             );
 
             FFAppState().valorMetaDashboard = valueOrDefault<double>(
-              _model.queryConfiguracaoInicialLoad?.first?.valorMetaMensal,
+              ObterPainelCardsCall.meta(
+                (_model.painelA?.jsonBody ?? ''),
+              )?.toDouble(),
               0.0,
             );
-            FFAppState().totalLead =
-                (_model.retuurnCountLeadsAtendenteLoad?.jsonBody ?? '');
+            FFAppState().totalLead = valueOrDefault<int>(
+              ObterPainelCardsCall.total(
+                (_model.painelA?.jsonBody ?? ''),
+              ),
+              0,
+            );
             FFAppState().totalLigacoesAtendente = valueOrDefault<int>(
-              _model.queryQuantidadeLigacoes?.length,
+              ObterPainelCardsCall.ligacao(
+                (_model.painelA?.jsonBody ?? ''),
+              ),
               0,
             );
             FFAppState().totalRealizados = valueOrDefault<int>(
-              (_model.retornoApiLeadsConcluidosAtendente?.jsonBody ?? ''),
+              ObterPainelCardsCall.concluidos(
+                (_model.painelA?.jsonBody ?? ''),
+              ),
               0,
             );
             FFAppState().totalVendasAtendente = valueOrDefault<int>(
-              (_model.apiReturQuantidadeVendasAtendente?.jsonBody ?? ''),
+              ObterPainelCardsCall.vendidos(
+                (_model.painelA?.jsonBody ?? ''),
+              ),
               0,
             );
             FFAppState().totalFaturamentoAtendente = valueOrDefault<int>(
-              (_model.faturamentoAtendente?.jsonBody ?? ''),
+              ObterPainelCardsCall.faturado(
+                (_model.painelA?.jsonBody ?? ''),
+              )?.round(),
               0,
             );
             FFAppState().update(() {});
+            _model.concluir = await ConcluirAntigosDiasOuMaisCall.call();
 
             context.goNamedAuth('HomePage', context.mounted);
           }
@@ -258,21 +193,24 @@ class _LoadWidgetState extends State<LoadWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.0, 0.0),
+            alignment: AlignmentDirectional(0, 0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   child: Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: AlignmentDirectional(0, 0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -286,9 +224,9 @@ class _LoadWidgetState extends State<LoadWidget> {
                         context.goNamedAuth('Login', context.mounted);
                       },
                       child: Lottie.asset(
-                        'assets/lottie_animations/Animation_-_Loading.json',
-                        width: 266.0,
-                        height: 200.0,
+                        'assets/jsons/Animation_-_Loading.json',
+                        width: 266,
+                        height: 200,
                         fit: BoxFit.contain,
                         animate: true,
                       ),

@@ -7,7 +7,7 @@ import '../../flutter_flow/flutter_flow_util.dart';
 
 Future<User?> googleSignInFunc() async {
   if (kIsWeb) {
-    final success = await SupaFlow.client.auth.signInWithOAuth(Provider.google);
+    final success = await SupaFlow.client.auth.signInWithOAuth(OAuthProvider.google);
     return success ? SupaFlow.client.auth.currentUser : null;
   }
 
@@ -31,7 +31,7 @@ Future<User?> googleSignInFunc() async {
   }
 
   final authResponse = await SupaFlow.client.auth.signInWithIdToken(
-    provider: Provider.google,
+    provider: OAuthProvider.google,
     idToken: idToken,
     accessToken: accessToken,
   );

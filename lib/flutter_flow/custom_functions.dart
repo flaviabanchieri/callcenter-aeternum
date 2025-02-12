@@ -79,7 +79,7 @@ int? anoAtual() {
   return now.year;
 }
 
-String? mesAnoAtual() {
+String mesAnoAtual() {
   // a function that returns the current year and month
   final now = DateTime.now();
   final formatter = DateFormat('MM/yyyy');
